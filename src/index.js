@@ -1,8 +1,8 @@
 const content = document.querySelector(".content");
 const btnNew = document.querySelector(".addNote-content");
 
-let items_db = localStorage.getItem("item_db")
-  ? JSON.parse(localStorage.getItem("item_db"))
+let items_db = localStorage.getItem("items_db")
+  ? JSON.parse(localStorage.getItem("items_db"))
   : [];
 
 const colors = [
@@ -24,24 +24,25 @@ function loadItems() {
   });
 }
 
-btnNew.onclick = () => {
+btnNew.addEventListener("click", () => {
   addHTML();
-};
+  addEvents();
+});
 
 function addHTML(item) {
   const div = document.createElement("div");
 
   div.innerHTML = `<div class="item" style="background-color: ${
     item?.color || randomColor()
-  }"> <span class="remove">X</span> <textarea>${
+  }"> <span class="remove">x</span> <textarea>${
     item?.text || ""
   }</textarea></div>`;
   content.appendChild(div);
 }
 
 function addEvents() {
-  const notes = documents.querySelectorAll(".item textarea");
-  const remove = documents.querySelectorAll(".item .remove");
+  const notes = document.querySelectorAll(".item textarea");
+  const remove = document.querySelectorAll(".item .remove");
 
   notes.forEach((item, i) => {
     item.oninput = () => {
@@ -52,14 +53,16 @@ function addEvents() {
       };
       localStorage.setItem("items_db", JSON.stringify(items_db));
     };
+    console.log(items_db);
   });
 
   remove.forEach((item, i) => {
     item.onclick = () => {
       content.children[i].remove();
-      if (item_db[i]) {
-        item_db.splice(i, 1);
-        localStorage.setItem("item_db", JSON.stringify(item_db));
+      if (items_db[i]) {
+        items_db.splice(i, 1);
+        localStorage.setItem("items_db", JSONe.stringify(items_db));
+        loadItems();
       }
       addEvents();
     };
@@ -67,7 +70,7 @@ function addEvents() {
 }
 function verifyNulls() {
   items_db = items_db.filter((item) => item);
-  localStorage.setItem("item_db", JSON.stringify(items_db));
+  localStorage.setItem("items_db", JSON.stringify(items_db));
 }
 
 loadItems();
